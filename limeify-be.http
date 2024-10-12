@@ -1,0 +1,6 @@
+@limeify_be_HostAddress = http://localhost:5178
+
+GET {{limeify_be_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
