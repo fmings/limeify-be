@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using limeify_be;
-using limeify_be.API;
+using Limeify.API;
 
 var builder = WebApplication.CreateBuilder(args);
 

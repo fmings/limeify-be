@@ -1,4 +1,4 @@
-﻿namespace limeify_be.API
+﻿namespace Limeify.API
 {
     public class UserAPI
     {
