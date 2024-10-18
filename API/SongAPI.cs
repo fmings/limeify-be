@@ -9,7 +9,7 @@ namespace Limeify.API
         public static void Map(WebApplication app)
         {
             // GET All Songs
-            app.MapGet("/songs", (LimeifyDbContext db) =>
+            app.MapGet("/api/songs", (LimeifyDbContext db) =>
             {
                 return db.Songs
                     .Include(s => s.Artist)
@@ -19,7 +19,7 @@ namespace Limeify.API
             });
 
             //GET Songs By Id
-            app.MapGet("/songs/{id}", (LimeifyDbContext db, int id) =>
+            app.MapGet("/api/songs/{id}", (LimeifyDbContext db, int id) =>
             {
                 var song = db.Songs
                     .Include(s => s.Artist)
