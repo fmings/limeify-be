@@ -35,6 +35,7 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 var app = builder.Build();
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
