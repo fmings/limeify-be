@@ -6,6 +6,7 @@ namespace Limeify.API
     {
         public static void Map(WebApplication app)
         {
+            // Get all Artist
             app.MapGet("/api/artist", (LimeifyDbContext db) =>
             {
                 return db.Artists.ToList();
