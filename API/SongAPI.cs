@@ -1,7 +1,4 @@
-﻿using Limeify.Models;
-using limeify_be;
-using limeify_be.Migrations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Limeify.API
 {
@@ -9,7 +6,7 @@ namespace Limeify.API
     {
         public static void Map(WebApplication app)
         {
-            // GET All Songs
+            // get all songs
             app.MapGet("/api/songs", (LimeifyDbContext db) =>
             {
                 return db.Songs
@@ -19,7 +16,7 @@ namespace Limeify.API
                     .ToListAsync();
             });
 
-            // GET Songs By Id
+            // get song by id
             app.MapGet("/api/songs/{id}", (LimeifyDbContext db, int id) =>
             {
                 var song = db.Songs
@@ -27,10 +24,12 @@ namespace Limeify.API
                     .Include(s => s.Album)
                     .Include(s => s.Genre)
                     .FirstOrDefault(s => s.Id == id);
+
                 if (song == null)
                 {
                     return Results.NotFound();
                 }
+
                 return Results.Ok(song);
             });
 
