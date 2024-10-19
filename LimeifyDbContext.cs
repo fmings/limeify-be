@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Limeify.Models;
 using Limeify.Data;
+using Limeify.DTOs;
 
 namespace limeify_be
 {
@@ -13,6 +14,7 @@ namespace limeify_be
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<PlaylistSongDTO> PlaylistSongs { get; set; }
 
         public LimeifyDbContext(DbContextOptions<LimeifyDbContext> context) : base(context) 
         {

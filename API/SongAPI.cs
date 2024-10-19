@@ -1,4 +1,5 @@
 ﻿using Limeify.Models;
+using Limeify.DTOs;
 using limeify_be;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +35,7 @@ namespace Limeify.API
             });
 
             // add song to playlist
-            app.MapGet("/api/songs/{songId}/add-to-playlist/{playlistId}", (LimeifyDbContext db, int songId, int playlistId) =>
+            app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", (LimeifyDbContext db, int songId, int playlistId) =>
             {
                 var song = db.Songs.Find(songId);
                 var podcast = db.Playlists.Find(playlistId);
@@ -42,9 +43,27 @@ namespace Limeify.API
                 if (playlistId == null || song == null)
                 {
                     return Results.NotFound("Playlist or song not found.");
-
-                    // check if the playlist already contains the song
                 }
+
+                // check if the playlist already contains the song
+                var existingPlaylistSong = db.PlaylistSongs.FirstOrDefault(pp => pp.PlaylistId == playlistId && pp.SongId == songId);
+
+                if (existingPlaylistSong != null)
+                {
+                    return Results.BadRequest("Song already exists in the playlist.");
+                }
+
+                // create a new playlist song and associate it with the playlist
+                var playlistSong = new PlaylistSongDTO
+                {
+                    PlaylistId = playlistId,
+                    SongId = songId,
+                };
+
+                db.PlaylistSongs.Add(playlistSong);
+                db.SaveChanges();
+
+                return Results.Created($"/api/songs/{songId}/add-to-playlist/{playlistId}", playlistId);
             });
         }
     }
