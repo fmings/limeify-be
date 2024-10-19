@@ -11,5 +11,6 @@
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
         public int Length { get; set; }
+        public List<Playlist> Playlists { get; set; }
     }
 }

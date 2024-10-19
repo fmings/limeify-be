@@ -11,6 +11,12 @@ namespace Limeify.API
             {
                 return db.Artists.ToList();
             });
+
+            // get a single artist
+            app.MapGet("/api/artists/{id}", (LimeifyDbContext db, int id) =>
+            {
+                return db.Artists.SingleOrDefault(artist => artist.Id == id);
+            });
         }
     }
 }

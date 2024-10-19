@@ -14,10 +14,7 @@ namespace limeify_be
         public DbSet<Song> Songs { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public LimeifyDbContext(DbContextOptions<LimeifyDbContext> context) : base(context) 
-        {
-
-        }
+        public LimeifyDbContext(DbContextOptions<LimeifyDbContext> context) : base(context) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,8 +26,9 @@ namespace limeify_be
             modelBuilder.Entity<Song>().HasData(SongData.Songs);
             modelBuilder.Entity<User>().HasData(UserData.Users);
 
+            modelBuilder.Entity<Playlist>()
+                .HasMany(playlist => playlist.Songs)
+                .WithMany(song => song.Playlists);
         }
-
     }
-
 }
