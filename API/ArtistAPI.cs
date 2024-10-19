@@ -1,13 +1,11 @@
-﻿using limeify_be;
-
-namespace Limeify.API
+﻿namespace Limeify.API
 {
     public class ArtistAPI
     {
         public static void Map(WebApplication app)
         {
-            // Get all Artist
-            app.MapGet("/api/artist", (LimeifyDbContext db) =>
+            // get all artists
+            app.MapGet("/api/artists", (LimeifyDbContext db) =>
             {
                 return db.Artists.ToList();
             });

@@ -1,5 +1,4 @@
 ﻿using Limeify.Models;
-using limeify_be;
 using Microsoft.EntityFrameworkCore;
 
 namespace Limeify.API
@@ -22,18 +21,17 @@ namespace Limeify.API
             });
 
             // GET SINGLE PLAYLIST BY ID AND INCLUDE LIST OF SONGS ON PLAYLIST
-            app.MapGet("/api/playlist/{id}", (LimeifyDbContext db, int id) =>
+            app.MapGet("/api/playlists/{id}", (LimeifyDbContext db, int id) =>
             {
                 Playlist selectedPlaylist = db.Playlists
                     .Include(p => p.Songs)
                     .FirstOrDefault(p => p.Id == id);
 
                 return selectedPlaylist;
-
             });
 
             // CREATE A NEW PLAYLIST
-            app.MapPost("/api/playlist", (LimeifyDbContext db, Playlist playlist) =>
+            app.MapPost("/api/playlists", (LimeifyDbContext db, Playlist playlist) =>
             {
                 db.Playlists.Add(playlist);
                 db.SaveChanges();
@@ -41,7 +39,7 @@ namespace Limeify.API
             });
 
             // UPDATE A PLAYLIST
-            app.MapPut("/api/playlist/{id}", (LimeifyDbContext db, int id, Playlist updatedDetails) =>
+            app.MapPut("/api/playlists/{id}", (LimeifyDbContext db, int id, Playlist updatedDetails) =>
             {
                 Playlist playlistToUpdate = db.Playlists.FirstOrDefault(p => p.Id == id);
                 if (playlistToUpdate == null)
@@ -56,11 +54,10 @@ namespace Limeify.API
                 db.SaveChanges();
 
                 return Results.Ok(playlistToUpdate);
-
             });
 
             // DELETE A PLAYLIST
-            app.MapDelete("/api/playlist/{id}", (LimeifyDbContext db, int id) =>
+            app.MapDelete("/api/playlists/{id}", (LimeifyDbContext db, int id) =>
             {
                 Playlist playlistToDelete = db.Playlists.FirstOrDefault(p => p.Id == id);
                 if (playlistToDelete == null)
