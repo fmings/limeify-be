@@ -1,6 +1,4 @@
-﻿using limeify_be;
-
-namespace Limeify.API
+﻿namespace Limeify.API
 {
     public class CategoryAPI
     {
