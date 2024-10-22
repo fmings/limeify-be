@@ -56,6 +56,33 @@ namespace Limeify.API
 
                 return Results.Created($"/api/songs/{songId}/add-to-playlist/{playlistId}", playlist);
             });
+
+            // Remove song from playlist
+            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", (LimeifyDbContext db, int playlistId, int songId) =>
+            {
+                var playlist = db.Playlists.Include(p => p.Songs).FirstOrDefault(p => p.Id == playlistId);
+
+                // Fetch the song to be removed
+                var song = db.Songs.FirstOrDefault(s => s.Id == songId);
+
+                if (playlist == null || song == null)
+                {
+                    return Results.NotFound("Playlist or song not found.");
+                }
+
+                // Check if the song exists in the playlist
+                if (!playlist.Songs.Any(s => s.Id == songId))
+                {
+                    return Results.BadRequest("Song does not exist in the playlist.");
+                }
+
+                playlist.Songs.Remove(song);
+
+                db.SaveChanges();
+
+                return Results.Ok("Song removed from the playlist.");
+            });
+
         }
     }
 }
