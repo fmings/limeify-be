@@ -1,4 +1,4 @@
-﻿namespace limeify_be.Repositories
+﻿namespace Limeify.Repositories
 {
     public class PlaylistRepository
     {

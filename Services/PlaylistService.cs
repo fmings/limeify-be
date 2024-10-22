@@ -1,4 +1,4 @@
-﻿namespace limeify_be.Services
+﻿namespace Limeify.Services
 {
     public class PlaylistService
     {

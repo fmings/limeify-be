@@ -1,4 +1,4 @@
-﻿namespace limeify_be.Interfaces
+﻿namespace Limeify.Interfaces
 {
     public interface IPlaylistRepository
     {
