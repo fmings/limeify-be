@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using Limeify.API;
+using Limeify.Interfaces;
+using Limeify.Services;
+using Limeify.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,9 @@ builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
+
+builder.Services.AddScoped<ISongService, SongService>();
+builder.Services.AddScoped<ISongRepository, SongRepository>();
 
 var app = builder.Build();
 
