@@ -34,10 +34,10 @@ namespace Limeify.API
             });
 
             // add song to playlist
-            app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", (LimeifyDbContext db, int songId, int playlistId) =>
+            app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", async (LimeifyDbContext db, int songId, int playlistId) =>
             {
-                var song = db.Songs.Include(s => s.Playlists).FirstOrDefault(s => s.Id == songId);
-                var playlist = db.Playlists.Include(p => p.Songs).FirstOrDefault(p => p.Id == playlistId);
+                var song = await db.Songs.Include(s => s.Playlists).FirstOrDefaultAsync(s => s.Id == songId);
+                var playlist = await db.Playlists.Include(p => p.Songs).FirstOrDefaultAsync(p => p.Id == playlistId);
 
                 if (playlist == null || song == null)
                 {
@@ -52,18 +52,18 @@ namespace Limeify.API
 
                 // add the song to the playlist
                 playlist.Songs.Add(song);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return Results.Created($"/api/songs/{songId}/add-to-playlist/{playlistId}", playlist);
             });
 
             // Remove song from playlist
-            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", (LimeifyDbContext db, int playlistId, int songId) =>
+            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", async(LimeifyDbContext db, int playlistId, int songId) =>
             {
-                var playlist = db.Playlists.Include(p => p.Songs).FirstOrDefault(p => p.Id == playlistId);
+                var playlist = await db.Playlists.Include(p => p.Songs).FirstOrDefaultAsync(p => p.Id == playlistId);
 
                 // Fetch the song to be removed
-                var song = db.Songs.FirstOrDefault(s => s.Id == songId);
+                var song = await db.Songs.FirstOrDefaultAsync(s => s.Id == songId);
 
                 if (playlist == null || song == null)
                 {
@@ -78,7 +78,7 @@ namespace Limeify.API
 
                 playlist.Songs.Remove(song);
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return Results.Ok("Song removed from the playlist.");
             });
