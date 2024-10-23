@@ -2,12 +2,10 @@
 
 namespace Limeify.Interfaces
 {
-    public interface IPlaylistRepository
+    public interface IPlaylistService
     {
-        // An interface is a contract that defines the signature of the functionality.
-        // It defines a set of methods that a class that inherits the interface MUST implement.
-        // The interface is a mechanism to achieve abstraction.
-        // Interfaces can be used in unit testing to mock out the actual implementation.
+        // The service layer is responsible for processing business logic.
+        // The service layer will call the repository layer to do the actual CRUD operations.
 
         Task<List<Playlist>> GetPlaylistsAsync();
         Task<Playlist> GetPlaylistsByUidAsync(string uid);
