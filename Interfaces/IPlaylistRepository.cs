@@ -10,7 +10,7 @@ namespace Limeify.Interfaces
         // Interfaces can be used in unit testing to mock out the actual implementation.
 
         Task<List<Playlist>> GetPlaylistsAsync();
-        Task<Playlist> GetPlaylistsByUidAsync(string uid);
+        Task<List<Playlist>> GetPlaylistsByUidAsync(string uid);
         Task<Playlist> GetPlaylistByIdAsync(int id);
         Task<Playlist> CreatePlaylistAsync(Playlist playlist);
         Task<Playlist> UpdatePlaylistAsync(int id, Playlist playlist);
