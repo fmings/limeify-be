@@ -4,9 +4,6 @@ namespace Limeify.Interfaces
 {
     public interface IPlaylistService
     {
-        // The service layer is responsible for processing business logic.
-        // The service layer will call the repository layer to do the actual CRUD operations.
-
         Task<List<Playlist>> GetPlaylistsAsync();
         Task<List<Playlist>> GetPlaylistsByUidAsync(string uid);
         Task<Playlist> GetPlaylistByIdAsync(int id);

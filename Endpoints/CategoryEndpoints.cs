@@ -1,6 +1,6 @@
-﻿namespace Limeify.API
+﻿namespace Limeify.Endpoints
 {
-    public class CategoryAPI
+    public class CategoryEndpoints
     {
         public static void Map(WebApplication app)
         {

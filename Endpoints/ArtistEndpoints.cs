@@ -1,6 +1,6 @@
-﻿namespace Limeify.API
+﻿namespace Limeify.Endpoints
 {
-    public class ArtistAPI
+    public class ArtistEndpoints
     {
         public static void Map(WebApplication app)
         {

@@ -6,12 +6,6 @@ namespace Limeify.Repositories
 {
     public class PlaylistRepository : IPlaylistRepository
     {
-        // The repository layer is responsible for CRUD operations.
-        // This repository class implements the IWeatherForecastRepository interface.
-        // Remember: the interface is a contract that defines methods that a class MUST implement.
-        // The repository layer will call the database context to do the actual CRUD operations.
-        // The repository layer will return the data to the service layer.
-
         private readonly LimeifyDbContext dbContext;
 
         public PlaylistRepository(LimeifyDbContext context)
@@ -19,57 +13,68 @@ namespace Limeify.Repositories
             dbContext = context;
         }
 
+        // get all playlists
         public async Task<List<Playlist>> GetPlaylistsAsync()
         {
             return await dbContext.Playlists.ToListAsync();
         }
 
+        // get all playlists by uid
         public async Task<List<Playlist>> GetPlaylistsByUidAsync(string uid)
         {
-            return await dbContext.Playlists.ToListAsync();
+            List<Playlist> userPlaylists = await dbContext.Playlists.Where(p => p.Uid == uid).ToListAsync();
+            return userPlaylists;
         }
 
+        // get single playlist by id and include list of songs on playlist
         public async Task<Playlist> GetPlaylistByIdAsync(int id)
         {
-            return await dbContext.Playlists.FindAsync(id);
+            Playlist selectedPlaylist = await dbContext.Playlists
+                .Include(p => p.Songs)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            return selectedPlaylist;
         }
 
+        // create a playlist
         public async Task<Playlist> CreatePlaylistAsync(Playlist playlist)
         {
-            dbContext.Playlists.Add(playlist);
+            await dbContext.Playlists.AddAsync(playlist);
             await dbContext.SaveChangesAsync();
             return playlist;
         }
 
-        public async Task<Playlist> UpdatePlaylistAsync(int id, Playlist playlist)
+        // update a playlist
+        public async Task<Playlist> UpdatePlaylistAsync(int id, Playlist updatedDetails)
         {
-            var existingPlaylist = await dbContext.Playlists.FindAsync(id);
+            var playlistToUpdate = await dbContext.Playlists.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingPlaylist == null)
+            if (playlistToUpdate == null)
             {
                 return null;
             }
 
-            existingPlaylist.Name = playlist.Name;
-            existingPlaylist.CategoryId = playlist.CategoryId;
-            existingPlaylist.Image = playlist.Image;
+            playlistToUpdate.Name = updatedDetails.Name;
+            playlistToUpdate.CategoryId = updatedDetails.CategoryId;
+            playlistToUpdate.Image = updatedDetails.Image;
 
             await dbContext.SaveChangesAsync();
-            return playlist;
+            return updatedDetails;
         }
 
+        // delete a playlist
         public async Task<Playlist> DeletePlaylistAsync(int id)
         {
-            var playlist = await dbContext.Playlists.FindAsync(id);
+            var playlistToDelete = await dbContext.Playlists.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (playlist == null)
+            if (playlistToDelete == null)
             {
                 return null;
             }
 
-            dbContext.Playlists.Remove(playlist);
+            dbContext.Playlists.Remove(playlistToDelete);
             await dbContext.SaveChangesAsync();
-            return playlist;
+            return playlistToDelete;
         }
     }
 }

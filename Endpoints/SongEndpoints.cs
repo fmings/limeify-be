@@ -1,9 +1,9 @@
 ﻿using Limeify.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Limeify.API
+namespace Limeify.Endpoints
 {
-    public class SongAPI
+    public class SongEndpoints
     {
         public static void Map(WebApplication app)
         {
@@ -35,23 +35,20 @@ namespace Limeify.API
             });
 
             // add song to playlist
-            app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", async (ISongRepository songRepository, int songId, int playlistId) =>
+            app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", async (ISongService songService, int songId, int playlistId) =>
             {
-                var result = await songRepository.AddSongToPlaylistAsync(songId, playlistId);
-
+                var result = await songService.AddSongToPlaylistAsync(songId, playlistId);
                 return result;
             })
             .Produces<IResult>(StatusCodes.Status204NoContent);
 
-            // Remove song from playlist
-            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", async (ISongRepository songRepository, int playlistId, int songId) =>
+            // remove song from playlist
+            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", async (ISongService songService, int playlistId, int songId) =>
             {
-                var result = await songRepository.RemoveSongFromPlaylistAsync(playlistId, songId);
-
+                var result = await songService.RemoveSongFromPlaylistAsync(playlistId, songId);
                 return result;
             })
             .Produces<IResult>(StatusCodes.Status204NoContent);
-
         }
     }
 }

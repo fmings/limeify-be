@@ -1,5 +1,4 @@
 ﻿using Limeify.Interfaces;
-using Limeify.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Limeify.Repositories
@@ -38,7 +37,6 @@ namespace Limeify.Repositories
 
             // save the changes to the database
             await dbContext.SaveChangesAsync();
-
             return Results.Ok("Song removed from the playlist.");
         }
 
@@ -67,9 +65,7 @@ namespace Limeify.Repositories
 
             // save the changes to the database
             await dbContext.SaveChangesAsync();
-
             return Results.Created($"/api/songs/{songId}/add-to-playlist/{playlistId}", playlist);
-
         }
     }
 }

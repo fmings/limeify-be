@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
-using Limeify.API;
+using Limeify.Endpoints;
 using Limeify.Interfaces;
 using Limeify.Services;
 using Limeify.Repositories;
@@ -38,6 +38,8 @@ builder.Services.Configure<JsonOptions>(options =>
 
 builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddScoped<ISongRepository, SongRepository>();
+builder.Services.AddScoped<IPlaylistService, PlaylistService>();
+builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 
 var app = builder.Build();
 
@@ -54,9 +56,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Endpoints
-ArtistAPI.Map(app);
-CategoryAPI.Map(app);
-PlaylistAPI.Map(app);
-SongAPI.Map(app);
+ArtistEndpoints.Map(app);
+CategoryEndpoints.Map(app);
+PlaylistEndpoints.Map(app);
+SongEndpoints.Map(app);
 
 app.Run();
