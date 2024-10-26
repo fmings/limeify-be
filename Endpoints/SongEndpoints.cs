@@ -43,7 +43,7 @@ namespace Limeify.Endpoints
             .Produces<IResult>(StatusCodes.Status204NoContent);
 
             // remove song from playlist
-            app.MapDelete("/api/playlists/{playlistId}/remove-song/{songId}", async (ISongService songService, int playlistId, int songId) =>
+            app.MapDelete("/api/songs/{songId}/remove-from-playlist/{playlistId}", async (ISongService songService, int playlistId, int songId) =>
             {
                 var result = await songService.RemoveSongFromPlaylistAsync(playlistId, songId);
                 return result;
