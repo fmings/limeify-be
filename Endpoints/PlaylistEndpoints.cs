@@ -14,6 +14,12 @@ namespace Limeify.Endpoints
             })
             .Produces<List<Playlist>>(StatusCodes.Status200OK);
 
+            // get public playlists
+            app.MapGet("/api/playlists/public", async (IPlaylistService playlistService) =>
+            {
+                return await playlistService.GetPublicPlaylistsAsync();
+            });
+
             // get all playlists by uid
             app.MapGet("/api/user/{uid}/playlists", async (IPlaylistService playlistService, string uid) =>
             {

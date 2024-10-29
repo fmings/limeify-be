@@ -5,6 +5,7 @@ namespace Limeify.Interfaces
     public interface IPlaylistService
     {
         Task<List<Playlist>> GetPlaylistsAsync();
+        Task<List<Playlist>> GetPublicPlaylistsAsync();
         Task<List<Playlist>> GetPlaylistsByUidAsync(string uid);
         Task<Playlist> GetPlaylistByIdAsync(int id);
         Task<Playlist> CreatePlaylistAsync(Playlist playlist);

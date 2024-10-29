@@ -19,6 +19,13 @@ namespace Limeify.Repositories
             return await dbContext.Playlists.ToListAsync();
         }
 
+        // get all public playlists
+        public async Task<List<Playlist>> GetPublicPlaylistsAsync()
+        {
+            List<Playlist> publicPlaylists = await dbContext.Playlists.Where(p => p.IsPublic == true).ToListAsync();
+            return publicPlaylists;
+        }
+
         // get all playlists by uid
         public async Task<List<Playlist>> GetPlaylistsByUidAsync(string uid)
         {
@@ -61,6 +68,7 @@ namespace Limeify.Repositories
             playlistToUpdate.Name = updatedDetails.Name;
             playlistToUpdate.CategoryId = updatedDetails.CategoryId;
             playlistToUpdate.Image = updatedDetails.Image;
+            playlistToUpdate.IsPublic = updatedDetails.IsPublic;
 
             await dbContext.SaveChangesAsync();
             return updatedDetails;
