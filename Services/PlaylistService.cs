@@ -17,6 +17,11 @@ namespace Limeify.Services
             return await _playlistRepository.GetPlaylistsAsync();
         }
 
+        public async Task<List<Playlist>> GetPublicPlaylistsAsync()
+        {
+            return await _playlistRepository.GetPublicPlaylistsAsync();
+        }
+
         public async Task<List<Playlist>> GetPlaylistsByUidAsync(string uid)
         {
             return await _playlistRepository.GetPlaylistsByUidAsync(uid);
