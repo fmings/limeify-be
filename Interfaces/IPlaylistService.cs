@@ -2,7 +2,7 @@
 
 namespace Limeify.Interfaces
 {
-    public interface IPlaylistRepository
+    public interface IPlaylistService
     {
         Task<List<Playlist>> GetPlaylistsAsync();
         Task<List<Playlist>> GetPlaylistsByUidAsync(string uid);
