@@ -38,6 +38,10 @@ namespace Limeify.Repositories
         {
             Playlist selectedPlaylist = await dbContext.Playlists
                 .Include(p => p.Songs)
+                    .ThenInclude(s => s.Album)
+                .Include(p => p.Songs)
+                    .ThenInclude(s => s.Artist)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             return selectedPlaylist;
