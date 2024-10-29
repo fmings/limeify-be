@@ -34,6 +34,15 @@ namespace Limeify.Endpoints
                 return Results.Ok(song);
             });
 
+            // search songs
+            //app.MapGet("/api/songs/search", (LimeifyDbContext db, string searchValue) =>
+            //{
+            //    var searchResults = db.Songs
+            //        .Where(song =>
+            //            song.Name.ToLower().Contains(searchValue.ToLower()) ||
+            //            song.Artist.Name.ToLower().Contains(searchValue.ToLower())
+            //});
+
             // add song to playlist
             app.MapPost("/api/songs/{songId}/add-to-playlist/{playlistId}", async (ISongService songService, int songId, int playlistId) =>
             {
