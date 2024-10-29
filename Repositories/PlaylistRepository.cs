@@ -22,7 +22,7 @@ namespace Limeify.Repositories
         // get all public playlists
         public async Task<List<Playlist>> GetPublicPlaylistsAsync()
         {
-            List<Playlist> publicPlaylists = await dbContext.Playlists.Where(p => p.IsPublic == false).ToListAsync();
+            List<Playlist> publicPlaylists = await dbContext.Playlists.Where(p => p.IsPublic == true).ToListAsync();
             return publicPlaylists;
         }
 
