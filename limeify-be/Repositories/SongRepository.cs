@@ -12,7 +12,7 @@ namespace Limeify.Repositories
             dbContext = context;
         }
 
-        public async Task<IResult> RemoveSongFromPlaylistAsync(int playlistId, int songId)
+        public async Task<IResult> RemoveSongFromPlaylistAsync(int songId, int playlistId)
         {
             // fetch the playlist along with the songs
             var playlist = await dbContext.Playlists.Include(p => p.Songs).FirstOrDefaultAsync(p => p.Id == playlistId);
@@ -37,7 +37,7 @@ namespace Limeify.Repositories
 
             // save the changes to the database
             await dbContext.SaveChangesAsync();
-            return Results.Ok("Song removed from the playlist.");
+            return Results.NoContent();
         }
 
         public async Task<IResult> AddSongToPlaylistAsync(int songId, int playlistId)

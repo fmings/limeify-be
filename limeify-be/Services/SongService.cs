@@ -11,7 +11,7 @@ namespace Limeify.Services
             _songRepository = songRepository;
         }
 
-        public async Task<IResult> RemoveSongFromPlaylistAsync(int playlistId, int songId)
+        public async Task<IResult> RemoveSongFromPlaylistAsync(int songId, int playlistId)
         {
             return await _songRepository.RemoveSongFromPlaylistAsync(songId, playlistId);
         }
