@@ -51,7 +51,7 @@ public class SongTests
         var result = await _songService.RemoveSongFromPlaylistAsync(playlistId, songId);
 
         // Assert - means to check the result
-        // No Content is returned by the RemoveSongFromPlaylistAsync.
+        // Bad Request is returned by the RemoveSongFromPlaylistAsync when song does not exist on playlist.
         Assert.IsType<BadRequest>(result);
     }
 
