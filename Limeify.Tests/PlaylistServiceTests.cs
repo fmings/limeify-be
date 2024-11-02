@@ -30,20 +30,57 @@ public class PlaylistServiceTests
             IsPublic = false,
         };
 
-        _mockPlaylistRepository.Setup(repo => repo.CreatePlaylistAsync(newPlaylist)).ReturnsAsync(newPlaylist);
+        _mockPlaylistRepository
+            .Setup(repo => repo.CreatePlaylistAsync(newPlaylist))
+            .ReturnsAsync(newPlaylist);
+
         var actualPlaylist = await _playlistService.CreatePlaylistAsync(newPlaylist);
+
         Assert.Equal(newPlaylist.Id, actualPlaylist.Id);
     }
 
     [Fact]
-    public async Task UpdatePlaylistAsync_ShouldReturnTrue_WhenPlaylistExists()
+    public async Task UpdatePlaylistAsync_ShouldReturnUpdatedPlaylist_WhenPlaylistExists()
     {
+        var updatedPlaylist = new Playlist
+        {
+            Id = 6,
+            Name = "Updated Playlist",
+            CategoryId = 1,
+            Image = "https://www.afrocharts.com/images/song_cover.png",
+            Uid = "C0wunKp1sIQRM9YR48JnQPlNXt92",
+            IsPublic = false,
+        };
 
+        _mockPlaylistRepository
+            .Setup(repo => repo.UpdatePlaylistAsync(updatedPlaylist.Id, updatedPlaylist))
+            .ReturnsAsync(updatedPlaylist);
+
+        var result = await _playlistService.UpdatePlaylistAsync(updatedPlaylist.Id, updatedPlaylist);
+
+        Assert.Equal(updatedPlaylist, result);
     }
 
     [Fact]
-    public async Task UpdatePlaylistAsync_ShouldReturnFalse_WhenPlaylistDoesNotExist()
+    public async Task UpdatePlaylistAsync_ShouldReturnNull_WhenPlaylistDoesNotExist()
     {
+        var nonExistentPlaylistId = 999;
+        var updatedPlaylist = new Playlist
+        {
+            Id = nonExistentPlaylistId,
+            Name = "Non-existent Playlist",
+            CategoryId = 1,
+            Image = "https://www.afrocharts.com/images/song_cover.png",
+            Uid = "C0wunKp1sIQRM9YR48JnQPlNXt92",
+            IsPublic = false,
+        };
 
+        _mockPlaylistRepository
+            .Setup(repo => repo.UpdatePlaylistAsync(nonExistentPlaylistId, updatedPlaylist))
+            .ReturnsAsync((Playlist)null);
+
+        var result = await _playlistService.UpdatePlaylistAsync(nonExistentPlaylistId, updatedPlaylist);
+
+        Assert.Null(result);
     }
 }
