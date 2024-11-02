@@ -1,5 +1,7 @@
 using Limeify.Interfaces;
 using Limeify.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
 namespace Limeify.Tests;
 
@@ -16,39 +18,116 @@ public class SongTests
     }
 
     [Fact]
-    public void RemoveSongFromPlaylist_ShouldReturnTrue_WhenSongRemoved()
+    public async Task RemoveSongFromPlaylist_ShouldReturnNoContent_WhenSongRemoved()
     {
         // Arrange - means to set up the test
         var songId = 1;
         var playlistId = 2;
 
         // The Setup method is used to set up the behavior of the mock object.
-        _mockSongRepository.Setup(repo => repo.RemoveSongFromPlaylistAsync(playlistId, songId)).Returns(true);
+        _mockSongRepository.Setup(repo => repo.RemoveSongFromPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.NoContent());
 
         // Act - means to run the test
-        // The GetBookById method is called with the bookId parameter.
-        var result = _mockSongRepository.RemoveSongFromPlaylistAsync(playlistId, songId);
+        // The RemoveSongFromPlaylistAsync method is called with the songId and playlistId parameters.
+        var result =  await _songService.RemoveSongFromPlaylistAsync(playlistId, songId);
 
         // Assert - means to check the result
-        // The actualBook returned by the GetBookById method should be null.
-        Assert.True(result);
+        // No Content is returned by the RemoveSongFromPlaylistAsync.
+        Assert.IsType<NoContent>(result);
     }
 
     [Fact]
-    public void RemoveSongFromPlaylist_ShouldReturnBadRequest_WhenSongRemoved()
+    public async Task RemoveSongFromPlaylist_ShouldReturnBadRequest_WhenSongRemoved()
     {
+        // Arrange
+        var songId = 99;
+        var playlistId = 2;
 
+        // The Setup method is used to set up the behavior of the mock object.
+        _mockSongRepository.Setup(repo => repo.RemoveSongFromPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.BadRequest());
+
+        // Act - means to run the test
+        // The RemoveSongFromPlaylistAsync method is called with the songId and playlistId parameters.
+        var result = await _songService.RemoveSongFromPlaylistAsync(playlistId, songId);
+
+        // Assert - means to check the result
+        // No Content is returned by the RemoveSongFromPlaylistAsync.
+        Assert.IsType<BadRequest>(result);
     }
 
     [Fact]
-    public void AddSongToPlaylist_ShouldReturnOK_WhenSongAdded()
+    public async Task AddSongToPlaylist_ShouldReturnOK_WhenSongAdded()
     {
+        // Arrange
+        var songId = 4;
+        var playlistId = 3;
 
+        // The Setup method is used to set up the behavior of the mock object.
+        _mockSongRepository.Setup(repo => repo.AddSongToPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.Created());
+
+        // Act - means to run the test
+        // The AddSongToPlaylistAsync method is called with the songId and playlistId parameters.
+        var result = await _songService.AddSongToPlaylistAsync(playlistId, songId);
+
+        // Assert - means to check the result
+        // Created is returned when the song is added to the playlist.
+        Assert.IsType<Created>(result);
     }
 
     [Fact]
-    public void AddSongToPlaylist_ShouldReturnNull_WhenSongDoesNotExist()
+    public async Task AddSongToPlaylist_ShouldReturnNotFound_WhenSongDoesNotExist()
     {
+        // Arrange
+        var songId = 99;
+        var playlistId = 1;
 
+        // The Setup method is used to set up the behavior of the mock object.
+        _mockSongRepository.Setup(repo => repo.AddSongToPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.NotFound());
+
+        // Act - means to run the test
+        // The AddSongToPlaylistAsync method is called with the songId and playlistId parameters.
+        var result = await _songService.AddSongToPlaylistAsync(playlistId, songId);
+
+        // Assert - means to check the result
+        // Not Found is returned by the AddSongToPlaylistAsync when the song does not exist..
+        Assert.IsType<NotFound>(result);
+    }
+
+    [Fact]
+    public async Task AddSongToPlaylist_ShouldReturnNotFound_WhenPlaylistDoesNotExist()
+    {
+        // Arrange
+        var songId = 3;
+        var playlistId = 99;
+
+        // The Setup method is used to set up the behavior of the mock object.
+        _mockSongRepository.Setup(repo => repo.AddSongToPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.NotFound());
+
+        // Act - means to run the test
+        // The AddSongToPlaylistAsync method is called with the songId and playlistId parameters.
+        var result = await _songService.AddSongToPlaylistAsync(playlistId, songId);
+
+        // Assert - means to check the result
+        // Not Found is returned by the AddSongToPlay when the playlist does not exist..
+        Assert.IsType<NotFound>(result);
+    }
+
+    [Fact]
+    public async Task AddSongToPlaylist_ShouldReturnBadRequest_WhenSongAlreadyOnPlaylist()
+    {
+        // Arrange
+        var songId = 4;
+        var playlistId = 3;
+
+        // The Setup method is used to set up the behavior of the mock object.
+        _mockSongRepository.Setup(repo => repo.AddSongToPlaylistAsync(playlistId, songId)).ReturnsAsync(Results.BadRequest());
+
+        // Act - means to run the test
+        // The AddSongToPlaylistAsync method is called with the songId and playlistId parameters.
+        var result = await _songService.AddSongToPlaylistAsync(playlistId, songId);
+
+        // Assert - means to check the result
+        // Not Found is returned by the AddSongToPlay when the playlist does not exist..
+        Assert.IsType<BadRequest>(result);
     }
 }
