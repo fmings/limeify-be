@@ -127,7 +127,7 @@ public class SongTests
         var result = await _songService.AddSongToPlaylistAsync(playlistId, songId);
 
         // Assert - means to check the result
-        // Not Found is returned by the AddSongToPlay when the playlist does not exist..
+        // Bad Request is returned by the AddSongToPlay when the playlist does not exist..
         Assert.IsType<BadRequest>(result);
     }
 }
