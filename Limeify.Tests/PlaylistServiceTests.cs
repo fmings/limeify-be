@@ -41,9 +41,75 @@ namespace Limeify.Tests
         }
 
         [Fact]
+        public async Task CreatePlaylistAsync_ShouldReturnNewPlaylistId()
+        {
+            var newPlaylist = new Playlist
+            {
+                Id = 6,
+                Name = "New Playlist",
+                CategoryId = 1,
+                Image = "https://www.afrocharts.com/images/song_cover.png",
+                Uid = "C0wunKp1sIQRM9YR48JnQPlNXt92",
+                IsPublic = false,
+            };
+
+            _mockPlaylistRepository
+                .Setup(repo => repo.CreatePlaylistAsync(newPlaylist))
+                .ReturnsAsync(newPlaylist);
+
+            var actualPlaylist = await _playlistService.CreatePlaylistAsync(newPlaylist);
+
+            Assert.Equal(newPlaylist.Id, actualPlaylist.Id);
+        }
+
+        [Fact]
+        public async Task UpdatePlaylistAsync_ShouldReturnUpdatedPlaylist_WhenPlaylistExists()
+        {
+            var updatedPlaylist = new Playlist
+            {
+                Id = 6,
+                Name = "Updated Playlist",
+                CategoryId = 1,
+                Image = "https://www.afrocharts.com/images/song_cover.png",
+                Uid = "C0wunKp1sIQRM9YR48JnQPlNXt92",
+                IsPublic = false,
+            };
+
+            _mockPlaylistRepository
+                .Setup(repo => repo.UpdatePlaylistAsync(updatedPlaylist.Id, updatedPlaylist))
+                .ReturnsAsync(updatedPlaylist);
+
+            var result = await _playlistService.UpdatePlaylistAsync(updatedPlaylist.Id, updatedPlaylist);
+
+            Assert.Equal(updatedPlaylist, result);
+        }
+
+        [Fact]
+        public async Task UpdatePlaylistAsync_ShouldReturnNull_WhenPlaylistDoesNotExist()
+        {
+            var nonExistentPlaylistId = 999;
+            var updatedPlaylist = new Playlist
+            {
+                Id = nonExistentPlaylistId,
+                Name = "Non-existent Playlist",
+                CategoryId = 1,
+                Image = "https://www.afrocharts.com/images/song_cover.png",
+                Uid = "C0wunKp1sIQRM9YR48JnQPlNXt92",
+                IsPublic = false,
+            };
+
+            _mockPlaylistRepository
+                .Setup(repo => repo.UpdatePlaylistAsync(nonExistentPlaylistId, updatedPlaylist))
+                .ReturnsAsync((Playlist)null);
+
+            var result = await _playlistService.UpdatePlaylistAsync(nonExistentPlaylistId, updatedPlaylist);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task DeletePlaylistAsync_ShouldReturnDeletedPlaylist_WhenPlaylistDeleted()
         {
-            // Arrange
             var playlistId = 1;
             var deletedPlaylist = new Playlist { Id = playlistId, Name = "Chill Vibes" };
 
@@ -51,10 +117,8 @@ namespace Limeify.Tests
                 .Setup(repo => repo.DeletePlaylistAsync(playlistId))
                 .ReturnsAsync(deletedPlaylist);
 
-            // Act
             var result = await _playlistService.DeletePlaylistAsync(playlistId);
 
-            // Assert
             _mockPlaylistRepository.Verify(repo => repo.DeletePlaylistAsync(playlistId), Times.Once);
             Assert.IsType<Playlist>(result);
             Assert.Equal(deletedPlaylist.Id, result.Id);
@@ -63,19 +127,16 @@ namespace Limeify.Tests
         [Fact]
         public async Task DeletePlaylistAsync_ShouldReturnNotFound_WhenPlaylistDoesNotExist()
         {
-            // Arrange
             var playlistId = 99;
 
             _mockPlaylistRepository
                 .Setup(repo => repo.DeletePlaylistAsync(playlistId))
-                .ReturnsAsync((Playlist)null); // Simulating not found
+                .ReturnsAsync((Playlist)null); 
 
-            // Act
             var result = await _playlistService.DeletePlaylistAsync(playlistId);
 
-            // Assert
             _mockPlaylistRepository.Verify(repo => repo.DeletePlaylistAsync(playlistId), Times.Once);
-            Assert.IsType<NotFound>(result); // Ensure it returns NotFound
+            Assert.Null(result);
         }
     }
 }
