@@ -7,7 +7,7 @@
             // get all categories
             app.MapGet("/api/categories", (LimeifyDbContext db) =>
             {
-                return db.Genres.ToList();
+                return db.Categories.ToList();
             });
         }
     }
